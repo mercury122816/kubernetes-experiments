@@ -1,0 +1,46 @@
+# Application Load Balancer (ALB) Ingress Controller Deployment Manifest.
+# This manifest details sensible defaults for deploying an ALB Ingress Controller.
+# GitHub: https://github.com/kubernetes-sigs/aws-alb-ingress-controller
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: alb-ingress-controller
+  name: alb-ingress-controller
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alb-ingress-controller
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alb-ingress-controller
+    spec:
+      containers:
+        - name: alb-ingress-controller
+          args:
+            # Limit the namespace where this ALB Ingress Controller deployment will
+            # resolve ingress resources. If left commented, all namespaces are used.
+            # - --watch-namespace=your-k8s-namespace
+            - --ingress-class=alb
+            - --cluster-name=cs-eks-dev
+            - --aws-vpc-id=vpc-00fcd0dbdc8ca4b46
+            - --aws-region=us-east-1
+            # Enables logging on all outbound requests sent to the AWS API.
+            # If logging is desired, set to true.
+            # - --aws-api-debug
+            # Maximum number of times to retry the aws calls.
+            # defaults to 10.
+            # - --aws-max-retries=10
+          env:
+            # AWS key id for authenticating with the AWS API.
+            # This is only here for examples. It's recommended you instead use
+            # a project like kube2iam for granting access.
+            - name: AWS_ACCESS_KEY_ID
+              value: AKIA3V7WQP5DQQWJDDHH
+            - name: AWS_SECRET_ACCESS_KEY
+              value: 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
+          # Repository location of the ALB Ingress Controller.
+          image: docker.io/amazon/aws-alb-ingress-controller:v1.1.4
+      serviceAccountName: alb-ingress-controller

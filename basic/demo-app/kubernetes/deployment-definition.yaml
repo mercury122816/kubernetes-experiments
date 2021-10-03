@@ -8,16 +8,25 @@ spec:
     matchLabels:
       app: demo-service
       version: v1
+      tier: experience
   template:
     metadata:
       labels:
         app: demo-service
         version: v1
+        tier: experience
     spec:
       containers:
       - name: demo-service
-        image: spring.io/demo-service-image
+        image: 803138993991.dkr.ecr.us-east-2.amazonaws.com/demo-service
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 8G
+            cpu: 250m
+          limits:
+            memory: 16G
+            cpu: 500m
         ports:
         - containerPort: 8080
         livenessProbe:

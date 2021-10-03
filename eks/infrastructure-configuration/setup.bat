@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name cs-dev-stack --capabilities CAPABILITY_IAM --template-body file://eks-fargate.yaml

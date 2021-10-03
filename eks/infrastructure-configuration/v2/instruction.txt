@@ -1,0 +1,10 @@
+aws cloudformation validate-template --template-body file://CSEKSClusterCloudFormation.yaml
+aws cloudformation create-stack --stack-name cs-dev-stack --capabilities CAPABILITY_IAM --template-body file://CSEKSClusterCloudFormation.yaml
+
+./configure-kubectl.sh
+./patch-core-dns.sh
+
+kubectl apply -f rbac-role.yaml
+kubectl apply -f alb-ingress-controller.yaml
+kubectl create rolebinding default:service-discovery-client --clusterrole service-discovery-client --serviceaccount default:default
+

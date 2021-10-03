@@ -1,0 +1,11 @@
+kubectl apply -f aws-observability-namespace.yaml
+kubectl apply -f aws-logging-cloudwatch-configmap.yaml
+aws iam create-policy --policy-name eks-cloudwatch-logging-policy --policy-document file://cloudwatch-policy.json
+
+kubectl apply -f aws-observability-namespace.yaml
+kubectl apply -f aws-logging-cloudwatch-configmap.yaml
+aws iam create-policy --policy-name eks-cloudwatch-logging-policy --policy-document file://cloudwatch-policy.json
+
+aws iam attach-role-policy \
+  --policy-arn arn:aws:iam::803138993991:policy/eks-cloudwatch-logging-policy \
+  --role-name cs-dev-stack-FargatePodExecutionRole-NTU5X6GL3O2L

@@ -1,0 +1,5 @@
+#set($allParams = $input.params())
+#set($rawToken = "$util.base64Decode($allParams.get('Authorization'))")
+
+
+#set($context.requestOverride.header.token = $rawToken)
